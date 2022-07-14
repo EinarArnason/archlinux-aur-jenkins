@@ -1,12 +1,12 @@
 
-def call(String pkgName, String destination, String repoName, String buildCommand) {
+def call(String url, String destination, String repoName, String buildCommand) {
     pipeline {
         agent any
 
         stages {
             stage('build') {
                 steps {
-                    git "https://aur.archlinux.org/${pkgName}.git"
+                    git url
                     script {
                         def pkg = sh(returnStdout: true, script: "PKGDEST=${destination} makepkg --packagelist").trim()
                         def exitCode = sh(returnStatus: true, script: "if [ -f ${pkg} ]; then exit 13; else PKGDEST=${destination} ${buildCommand}; fi")
