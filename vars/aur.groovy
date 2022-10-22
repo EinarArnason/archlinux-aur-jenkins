@@ -6,6 +6,7 @@ def call(String url, String destination, String repoName, String buildCommand) {
         stages {
             stage('build') {
                 steps {
+                    cleanWs()
                     git url
                     script {
                         def pkg = sh(returnStdout: true, script: "PKGDEST=${destination} makepkg --packagelist").trim()
